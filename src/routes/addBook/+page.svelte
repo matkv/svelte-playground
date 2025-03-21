@@ -4,7 +4,8 @@
     let author = "";
     let pages = 0;
 
-    let books: { title: string; author: string; pages: number }[] = [];
+    let books: { id: number; title: string; author: string; pages: number }[] =
+        [];
 
     // Fetch the list of books when the page loads
     onMount(async () => {
@@ -32,11 +33,26 @@
         const data = await response.json();
         if (response.ok) {
             console.log("Book added:", data);
-            // Handle success (e.g., show success message)
             await fetchBooks();
         } else {
             console.error("Error:", data);
-            // Handle error (e.g., show error message)
+        }
+    };
+
+    const deleteBook = async (id: number) => {
+        const response = await fetch("/api/deleteBook", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id }),
+        });
+
+        if (response.ok) {
+            console.log("Book deleted:", id);
+            await fetchBooks();
+        } else {
+            console.error("Error deleting book");
         }
     };
 </script>
@@ -58,7 +74,10 @@
     <h2 style="margin-bottom: 1rem;margin-top: 1rem;">Books List</h2>
     <ul>
         {#each books as book}
-            <li><b>{book.title}</b> by {book.author} ({book.pages} pages)</li>
+            <li>
+                <b>{book.id} {book.title}</b> by {book.author} ({book.pages} pages)
+                <button on:click={() => deleteBook(book.id)}>Delete</button>
+            </li>
         {/each}
     </ul>
 </div>
