@@ -41,17 +41,24 @@
     };
 </script>
 
-<form on:submit|preventDefault={submitForm}>
-    <input type="text" bind:value={title} placeholder="Title" required />
-    <input type="text" bind:value={author} placeholder="Author" required />
-    <input type="number" bind:value={pages} placeholder="Pages" required />
-    <button type="submit">Add Book</button>
-</form>
+<svelte:head>
+    <title>Add a book</title>
+    <meta name="description" content="Add a book" />
+</svelte:head>
+<div class="text-column">
+    <h1>Adding books</h1>
+    <form on:submit|preventDefault={submitForm}>
+        <input type="text" bind:value={title} placeholder="Title" required />
+        <input type="text" bind:value={author} placeholder="Author" required />
+        <input type="number" bind:value={pages} placeholder="Pages" required />
+        <button type="submit">Add Book</button>
+    </form>
 
-<!-- Display the list of books -->
-<h2>Books List</h2>
-<ul>
-    {#each books as book}
-        <li>{book.title} by {book.author} ({book.pages} pages)</li>
-    {/each}
-</ul>
+    <!-- Display the list of books -->
+    <h2 style="margin-bottom: 1rem;margin-top: 1rem;">Books List</h2>
+    <ul>
+        {#each books as book}
+            <li><b>{book.title}</b> by {book.author} ({book.pages} pages)</li>
+        {/each}
+    </ul>
+</div>
